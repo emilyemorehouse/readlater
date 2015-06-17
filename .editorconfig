@@ -1,0 +1,19 @@
+root = true
+
+# Alle Dateien = 4 Spaces
+[*]
+end_of_line = lf
+insert_final_newline = false
+trim_trailing_whitespace = true
+charset=utf-8
+indent_style = space
+indent_size = 4
+
+# JavaScripts
+# jQuery Style Guide: http://contribute.jquery.org/style-guide/js/
+[*.js]
+indent_style = tab
+
+[*.json]
+indent_style = space
+indent_size = 2

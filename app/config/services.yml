@@ -1,0 +1,41 @@
+parameters:
+#    parameter_name: value
+
+services:
+    jms_serializer.naming_strategy:
+        class: AppBundle\Serializer\IdenticalUnlessSpecifiedPropertyNamingStrategy
+
+    appbundle.twig.extension:
+        class: AppBundle\Twig\Extension
+        tags:
+            - { name: twig.extension }
+
+    appbundle.registration.form.type:
+        class: AppBundle\Form\Type\RegistrationFormType
+        tags:
+            - { name: form.type, alias: app_registration }
+
+    appbundle.resetting.form.type:
+        class: AppBundle\Form\Type\PasswordResettingFormType
+        tags:
+            - { name: form.type, alias: app_resetting }
+
+    appbundle.bookmark.type:
+        class: AppBundle\Form\BookmarkType
+        tags:
+            - { name: form.type, alias: app_bookmark }
+
+    appbundle.url.type:
+        class: AppBundle\Form\Type\UrlType
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: form.type, alias: app_url }
+
+    appbundle.tag.type:
+        class: AppBundle\Form\Type\TagType
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: form.type, alias: app_tag }
+
+    appbundle.htmlscraper.service:
+        class: AppBundle\Service\HtmlScraper

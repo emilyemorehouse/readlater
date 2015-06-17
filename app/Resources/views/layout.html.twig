@@ -1,0 +1,20 @@
+{% spaceless %}
+    <!DOCTYPE html>
+    <html lang="{{ app.request.locale }}">
+    <head>
+        <title>{% block title %}{{ 'website_title' | trans }}{% endblock %}</title>
+        <meta charset="{{ _charset }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        {% block stylesheets -%}
+            <link href="{{ app.environment == 'dev' ? asset('css/main.css') : asset('css/main.min.css') }}?{{ app.environment == 'dev' ? timestamp() : 'css/main.min.css' | filemtime }}" rel="stylesheet" media="screen">
+        {%- endblock -%}
+    </head>
+    <body>
+    {% block content -%}{%- endblock %}
+    {% block javascripts -%}
+        <script src="{{ app.environment == 'dev' ? asset('js/main.js') : asset('js/main.min.js') }}?{{ app.environment == 'dev' ? timestamp() : 'js/main.min.js' | filemtime }}"></script>
+    {%- endblock -%}
+    </body>
+    </html>
+{% endspaceless %}

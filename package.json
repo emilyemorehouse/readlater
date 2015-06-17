@@ -1,0 +1,23 @@
+{
+  "name": "arkste/readlater",
+  "description": "readlater",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "bower install"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "*",
+    "grunt": "*",
+    "grunt-strip": "*",
+    "grunt-bowercopy": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-less": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "matchdep": "*"
+  }
+}

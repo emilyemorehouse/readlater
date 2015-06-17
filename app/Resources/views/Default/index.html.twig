@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>{{ bookmarks.getTotalItemCount | number_format(0, ',', '.') }} {{ 'title_bookmarks' | transchoice(bookmarks.getTotalItemCount) }}</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ knp_pagination_render(bookmarks) }}
+        </div>
+        <div class="col-md-6 text-right">
+            <div class="btn-group">
+                <a href="{{ path('bookmark_add') }}" class="btn btn-primary">{{ 'button_bookmark_add' | trans }}</a>
+                <a href="{{ browserWidget(url('bookmark_add')) }}" id="bookmarklet-tooltip" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{ 'button_bookmarklet_tooltip' | trans }}">{{ 'bookmarklet' | trans }}</a>
+            </div>
+        </div>
+    </div>
+
+    {% if bookmarks | length > 0 %}
+        <div class="row">
+            <div class="col-sm-9 text-right">
+                <ul class="list-unstyled list-inline">
+                    <li>Sort:</li>
+                    <li>{{ knp_pagination_sortable(bookmarks, 'label_id' | trans, 'id') }}</li>
+                    <li>{{ knp_pagination_sortable(bookmarks, 'label_title' | trans, 'title') }}</li>
+                    <li>{{ knp_pagination_sortable(bookmarks, 'label_url' | trans, 'url.url') }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-9">
+                <ul class="list-group">
+                    {% for bookmark in bookmarks %}
+                        <li class="list-group-item">
+                            <div class="dropdown pull-right">
+                                <a href="#" class="dropdown-toggle btn btn-default btn-xs text-muted" id="menu-{{ bookmark.id }}" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-chevron-down"></i></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu-{{ bookmark.id }}">
+                                    <li role="presentation"><a role="menuitem" href="{{ path('bookmark_edit', { id: bookmark.id }) }}"><i class="fa fa-edit"></i> {{ 'button_edit' | trans }}</a></li>
+                                    <li role="presentation"><a role="menuitem" href="{{ path('bookmark_delete', { id: bookmark.id }) }}"><i class="fa fa-trash"></i> {{ 'button_delete' | trans }}</a></li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <small data-toggle="tooltip" data-placement="top" title="{{ bookmark.createdAt | date('d.m.Y H:i:s') }}">{{ bookmark.createdAt | ago }}</small>
+                            </div>
+
+                            <div><h4 class="list-group-item-heading"><a href="{{ bookmark.url.url }}" target="_blank" rel="nofollow"><strong>{{ bookmark.title | default('title.empty') }}</strong></a></h4></div>
+
+                            <div>{{ bookmark.url.url | slice(0, 50) }}{{ bookmark.url.url | length > 50 ? '...' : '' }}</div>
+
+                            <ul class="list-unstyled list-inline">
+                                {% for tag in bookmark.tags | sort %}
+                                    <li><a href="{{ path('bookmark_tag', { tags: tag }) }}">{{ tag }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-sm-3 text-center">
+                <div class="list-group">
+                    {% for tag in tagcloud.tags.buckets if tag.key not in (app.request.get('tags') | split('+')) %}
+                        <a href="{{ path('bookmark_tag', { tags: app.request.get('tags') ? app.request.get('tags') ~ '+' ~ tag.key : tag.key }) }}" class="list-group-item">{{ tag.key }} <span class="badge">{{ tag.doc_count }}</span></a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                {{ knp_pagination_render(bookmarks) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
